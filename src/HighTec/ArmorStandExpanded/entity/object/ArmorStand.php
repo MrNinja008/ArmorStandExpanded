@@ -195,7 +195,7 @@ class ArmorStand extends Living
                     $isArmorSlot = true;
                 }
             } else {
-                if ($item instanceof Armor) $isArmorSlot = true;
+                if ($item instanceof Armor || $item->getId() == Item::SKULL) $isArmorSlot = true;
                 $targetSlot = $this->getSlot($item);
             }
 
