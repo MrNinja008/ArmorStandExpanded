@@ -21,7 +21,8 @@ class SlotItems
         Item::LEATHER_HELMET,
         Item::TURTLE_HELMET,
         Item::SKULL,
-        Item::JACK_O_LANTERN
+        Item::JACK_O_LANTERN,
+        748 //netherite_helmet
     ];
 
     public const SLOT_CHESTPLATE_ITEMS = [
@@ -29,7 +30,8 @@ class SlotItems
         Item::DIAMOND_CHESTPLATE,
         Item::GOLD_CHESTPLATE,
         Item::IRON_CHESTPLATE,
-        Item::LEATHER_CHESTPLATE
+        Item::LEATHER_CHESTPLATE,
+        749 //netherite_chestplate
     ];
 
     public const SLOT_LEGGINS_ITEMS = [
@@ -37,7 +39,8 @@ class SlotItems
         Item::DIAMOND_LEGGINGS,
         Item::GOLD_LEGGINGS,
         Item::IRON_LEGGINGS,
-        Item::LEATHER_LEGGINGS
+        Item::LEATHER_LEGGINGS,
+        750 //netherite_leggins
     ];
 
     public const SLOT_BOOTS_ITEMS = [
@@ -45,7 +48,8 @@ class SlotItems
         Item::DIAMOND_BOOTS,
         Item::GOLD_BOOTS,
         Item::IRON_BOOTS,
-        Item::LEATHER_BOOTS
+        Item::LEATHER_BOOTS,
+        751 //netherite_boots
     ];
 
     public const OFFHAND_ITEMS = [
