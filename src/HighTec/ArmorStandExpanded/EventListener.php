@@ -65,10 +65,13 @@ class EventListener implements Listener
      */
     public function onArmorStandAttack(EntityDamageByEntityEvent $source)
     {
-        if (!$source->getDamager() instanceof Player || ($source->getEntity() instanceof ArmorStand && $this->instance->canDoThis($source->getDamager()) === true)) {
-            return;
+        if(!$source->getDamager() instanceof Player){
+          return;
         }
-        $source->setCancelled();
+        if ($source->getEntity() instanceof ArmorStand && $this->instance->canDoThis($source->getDamager()) === false) {
+            $source->setCancelled();
+        }
+        
     }
 
 }
