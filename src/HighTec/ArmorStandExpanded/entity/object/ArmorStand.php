@@ -69,6 +69,8 @@ class ArmorStand extends Living
      */
     protected $vibrateTimer = 0;
 
+    protected $customDrops = null;
+
     protected function initEntity(): void
     {
         $this->setMaxHealth(6);
@@ -227,7 +229,7 @@ class ArmorStand extends Living
         if (!$targetItem->isNull() and $player->isSurvival()) {
             if (!$targetItem->equals($sourceItem)) {
                 $contents = $player->getInventory()->getContents();
-                $contents[$player->getInventory()->getHeldItemIndex()]->setCount($contents[$player->getInventory()->getHeldItemIndex()]->getCount()-1);
+                $contents[$player->getInventory()->getHeldItemIndex()]->setCount($contents[$player->getInventory()->getHeldItemIndex()]->getCount() - 1);
                 $player->getInventory()->setContents($contents);
             }
         }
@@ -278,7 +280,18 @@ class ArmorStand extends Living
      */
     public function getDrops(): array
     {
+        if($this->customDrops !== null){
+            return $this->customDrops;
+        }
         return array_merge($this->equipment->getContents(), $this->armorInventory->getContents(), [ItemFactory::get(Item::ARMOR_STAND)]);
+    }
+
+    /**
+     * @param Item[] $items
+     */
+    public function setDrops(array $items)
+    {
+        $this->customDrops = $items;
     }
 
     /**
