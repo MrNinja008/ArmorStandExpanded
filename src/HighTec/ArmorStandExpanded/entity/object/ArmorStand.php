@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace HighTec\ArmorStandExpanded\entity\object;
 
 use HighTec\ArmorStandExpanded\data\SlotItems;
+use HighTec\ArmorStandExpanded\events\ArmorStandExpandedChangeItemEvent;
+use HighTec\ArmorStandExpanded\events\ArmorStandExpandedPlayerChangePoseEvent;
 use HighTec\ArmorStandExpanded\inventory\ArmorStandEquipment;
 use pocketmine\entity\Entity;
 use pocketmine\entity\EntityIds;
@@ -68,6 +70,8 @@ class ArmorStand extends Living
      * @var int
      */
     protected $vibrateTimer = 0;
+
+    protected $customDrops = null;
 
     protected function initEntity(): void
     {
@@ -171,7 +175,12 @@ class ArmorStand extends Living
     public function onFirstInteract(Player $player, Item $item, Vector3 $clickPos): bool
     {
         if ($player->isSneaking()) {
-            $this->setPose(($this->getPose() + 1) % 13);
+            $ev = new ArmorStandExpandedPlayerChangePoseEvent($player, $this, $this->getPose(), ($this->getPose() + 1) % 13);
+            $ev->call();
+            if ($ev->isCancelled()) {
+                return true;
+            }
+            $this->setPose($ev->getNewPose());
             return true;
         }
 
@@ -218,7 +227,11 @@ class ArmorStand extends Living
     protected function tryChangeEquipment(Player $player, Item $targetItem, int $slot, bool $isArmorSlot = false): void
     {
         $sourceItem = $isArmorSlot ? $this->armorInventory->getItem($slot) : $this->equipment->getItem($slot);
-
+        $ev = new ArmorStandExpandedChangeItemEvent($player, $this, $targetItem, $sourceItem);
+        $ev->call();
+        if ($ev->isCancelled()) {
+            return;
+        }
         if ($isArmorSlot) {
             $this->armorInventory->setItem($slot, (clone $targetItem)->setCount(1));
         } else {
@@ -227,7 +240,7 @@ class ArmorStand extends Living
         if (!$targetItem->isNull() and $player->isSurvival()) {
             if (!$targetItem->equals($sourceItem)) {
                 $contents = $player->getInventory()->getContents();
-                $contents[$player->getInventory()->getHeldItemIndex()]->setCount($contents[$player->getInventory()->getHeldItemIndex()]->getCount()-1);
+                $contents[$player->getInventory()->getHeldItemIndex()]->setCount($contents[$player->getInventory()->getHeldItemIndex()]->getCount() - 1);
                 $player->getInventory()->setContents($contents);
             }
         }
@@ -278,7 +291,18 @@ class ArmorStand extends Living
      */
     public function getDrops(): array
     {
+        if ($this->customDrops !== null) {
+            return $this->customDrops;
+        }
         return array_merge($this->equipment->getContents(), $this->armorInventory->getContents(), [ItemFactory::get(Item::ARMOR_STAND)]);
+    }
+
+    /**
+     * @param Item[] $items
+     */
+    public function setDrops(array $items)
+    {
+        $this->customDrops = $items;
     }
 
     /**
