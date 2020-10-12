@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace HighTec\ArmorStandExpanded;
 
 use HighTec\ArmorStandExpanded\entity\object\ArmorStand;
+use HighTec\ArmorStandExpanded\events\ArmorStandExpandedBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\EntityDeathEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
@@ -60,18 +62,30 @@ class EventListener implements Listener
         }
     }
 
+
     /**
      * @param EntityDamageByEntityEvent $source
      */
     public function onArmorStandAttack(EntityDamageByEntityEvent $source)
     {
-        if(!$source->getDamager() instanceof Player){
-          return;
+        if (!$source->getDamager() instanceof Player) {
+            return;
         }
-        if ($source->getEntity() instanceof ArmorStand && $this->instance->canDoThis($source->getDamager()) === false) {
-            $source->setCancelled();
+        if ($source->getEntity() instanceof ArmorStand) {
+            if ($this->instance->canDoThis($source->getDamager()) === false) {
+                $source->setCancelled();
+                return;
+            }
+            if ($source->getFinalDamage() >= $source->getEntity()->getHealth()) {
+                $ev = new ArmorStandExpandedBreakEvent($source->getDamager(), $source->getEntity());
+                $ev->call();
+                if ($ev->isCancelled()) {
+                    $source->setCancelled();
+                }
+            }
+
         }
-        
+
     }
 
 }
