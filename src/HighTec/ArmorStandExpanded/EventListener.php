@@ -7,7 +7,6 @@ namespace HighTec\ArmorStandExpanded;
 use HighTec\ArmorStandExpanded\entity\object\ArmorStand;
 use HighTec\ArmorStandExpanded\events\ArmorStandExpandedBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\event\entity\EntityDeathEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
