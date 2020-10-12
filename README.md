@@ -57,8 +57,51 @@ Since the ArmorStand is usually not implemented in Pocketmine-MP, it is not chec
 
 ArmorStandExpanded does this for you.
 
+#### Events
+ArmorStandExpanded now have some Events you can use for your further ServerLogic.
+They are under the namespace HighTec\ArmorStandExpanded\events.
+
+Very simple to Use you can suprise your Players with with unusual Drops or forbids them to ruin the pretty Part.
+
+```php
+    /**
+     * @param ArmorStandExpandedBreakEvent $ev
+     */
+    public function onBreak(ArmorStandExpandedBreakEvent $ev){
+        $ev->setDrops([ItemFactory::get(Item::DIAMOND_AXE), ItemFactory::get(Item::CAKE)]);
+    }
+
+    /**
+     * @param ArmorStandExpandedChangeItemEvent $ev
+     */
+    public function onItemChange(ArmorStandExpandedChangeItemEvent $ev){
+        $this->doSomethingWithTheNewItem($ev->getNewItem());
+        $ev->setCancelled();
+    }
+
+    /**
+     * @param ArmorStandExpandedPlaceEvent $ev
+     */
+    public function onPlace(ArmorStandExpandedPlaceEvent $ev){
+        if(!$this->checkIfThePlayerIsToughEnoughToUseThis($ev->getPlayer())){
+            $ev->setCancelled();
+        }
+    }
+
+    /**
+     * @param ArmorStandExpandedPlayerChangePoseEvent $ev
+     */
+    public function onChangePose(ArmorStandExpandedPlayerChangePoseEvent $ev){
+        if(!$this->checkIfNewPoseIsNotNFSW($ev->getNewPose())){
+            $ev->setCancelled();
+        }
+    }
+
+```
+
+
 #### ToDo
-- [ ] Add Events for equip, remove, change Pose, place and break
+- [x] Add Events for equip, remove, change Pose, place and break
 - [ ] Add some additional Functions and Gadgets
 - [ ] ... (Make suggestions :wink:)
 
