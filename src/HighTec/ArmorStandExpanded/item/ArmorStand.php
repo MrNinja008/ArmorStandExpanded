@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace HighTec\ArmorStandExpanded\item;
 
 use HighTec\ArmorStandExpanded\entity\object\ArmorStand as EntityArmorStand;
+use HighTec\ArmorStandExpanded\events\ArmorStandExpandedChangeItemEvent;
+use HighTec\ArmorStandExpanded\events\ArmorStandExpandedPlaceEvent;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\item\Item;
@@ -39,7 +41,11 @@ class ArmorStand extends Item
     public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector): bool
     {
         $entity = Entity::createEntity("ArmorStand", $player->level, Entity::createBaseNBT($blockReplace->asVector3()->add(0.5, 0, 0.5), null, $this->getDirection($player->getYaw())));
-
+        $ev = new ArmorStandExpandedPlaceEvent($player, $entity);
+        $ev->call();
+        if ($ev->isCancelled()) {
+            return true;
+        }
 
         if ($entity instanceof EntityArmorStand) {
             if ($player->isSurvival()) {
