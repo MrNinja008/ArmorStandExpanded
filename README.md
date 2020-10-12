@@ -3,6 +3,9 @@
 ### **Adds a fully functional ArmorStand to your Pocketmine-MP Server**
 
 [![](https://poggit.pmmp.io/shield.state/ArmorStandExpanded)](https://poggit.pmmp.io/p/ArmorStandExpanded)
+[![](https://poggit.pmmp.io/shield.api/ArmorStandExpanded)](https://poggit.pmmp.io/p/ArmorStandExpanded)
+[![](https://poggit.pmmp.io/shield.dl/ArmorStandExpanded)](https://poggit.pmmp.io/p/ArmorStandExpanded)
+[![](https://poggit.pmmp.io/shield.dl.total/ArmorStandExpanded)](https://poggit.pmmp.io/p/ArmorStandExpanded)
 
 #### First of all: Why did I call it ArmorStandExpanded? 
 At the moment you get a fully functional ArmorStand just like you would expect an fully functional ArmorStand. 
