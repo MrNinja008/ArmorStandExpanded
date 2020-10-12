@@ -17,18 +17,10 @@ use pocketmine\Player;
 class ArmorStandEquipment extends BaseInventory
 {
 
-    /**
-     *
-     */
     public const MAINHAND = 0;
-    /**
-     *
-     */
+
     public const OFFHAND = 1;
 
-    /**
-     * @var Living
-     */
     protected $holder;
 
     /**
