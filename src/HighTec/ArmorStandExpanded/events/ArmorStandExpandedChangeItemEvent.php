@@ -28,8 +28,8 @@ class ArmorStandExpandedChangeItemEvent extends ArmorStandExpandedEvent
      * ArmorStandExpandedChangeItemEvent constructor.
      * @param Player $player
      * @param ArmorStand $armorStand
-     * @param $newItem
-     * @param $oldItem
+     * @param Item $newItem
+     * @param Item $oldItem
      */
     public function __construct(Player $player, ArmorStand $armorStand, $newItem, $oldItem)
     {

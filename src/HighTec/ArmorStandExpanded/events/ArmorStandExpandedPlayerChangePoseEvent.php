@@ -27,8 +27,8 @@ class ArmorStandExpandedPlayerChangePoseEvent extends ArmorStandExpandedEvent
      * ArmorStandExpandedPlayerChangePoseEvent constructor.
      * @param Player $player
      * @param ArmorStand $armorStand
-     * @param $oldPose
-     * @param $newPose
+     * @param int $oldPose
+     * @param int $newPose
      */
     public function __construct(Player $player, ArmorStand $armorStand, $oldPose, $newPose)
     {
