@@ -310,20 +310,17 @@ class ArmorStand extends Living
      */
     public function attack(EntityDamageEvent $source): void
     {
-        if ($source instanceof EntityDamageByEntityEvent) {
-            $damager = $source->getDamager();
-            if ($damager instanceof Player) {
-                if ($damager->isCreative()) {
-                    $this->kill();
-                }
-            }
-        }
-        if ($source->getCause() === EntityDamageEvent::CAUSE_CONTACT) { // cactus
+        if ($source->getCause() === EntityDamageEvent::CAUSE_CONTACT or $source->getCause() === EntityDamageEvent::CAUSE_FIRE_TICK) { // cactus or fire
             $source->setCancelled(true);
         }
 
         Entity::attack($source);
 
+        if ($source instanceof EntityDamageByEntityEvent and $source->getDamager() instanceof Player) {
+            if ($source->getDamager()->isCreative(true) and !$source->isCancelled()) {
+                $this->kill();
+            }
+        }
         if (!$source->isCancelled()) {
             $this->setGenericFlag(self::DATA_FLAG_VIBRATING, true);
             $this->vibrateTimer += 30;
