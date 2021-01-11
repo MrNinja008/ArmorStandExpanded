@@ -174,7 +174,7 @@ class ArmorStand extends Living
      */
     public function onFirstInteract(Player $player, Item $item, Vector3 $clickPos): bool
     {
-        if ($player->isSneaking()) {
+        if ($player->isSneaking() and !$player->isSpectator()) {
             $ev = new ArmorStandExpandedPlayerChangePoseEvent($player, $this, $this->getPose(), ($this->getPose() + 1) % 13);
             $ev->call();
             if ($ev->isCancelled()) {
