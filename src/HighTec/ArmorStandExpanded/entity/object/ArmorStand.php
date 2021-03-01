@@ -174,7 +174,7 @@ class ArmorStand extends Living
      */
     public function onFirstInteract(Player $player, Item $item, Vector3 $clickPos): bool
     {
-        if ($player->isSneaking() and !$player->isSpectator()) {
+        if ($player->isSneaking()) {
             $ev = new ArmorStandExpandedPlayerChangePoseEvent($player, $this, $this->getPose(), ($this->getPose() + 1) % 13);
             $ev->call();
             if ($ev->isCancelled()) {
@@ -294,7 +294,9 @@ class ArmorStand extends Living
         if ($this->customDrops !== null) {
             return $this->customDrops;
         }
-        return array_merge($this->equipment->getContents(), $this->armorInventory->getContents(), [ItemFactory::get(Item::ARMOR_STAND)]);
+        $debug = array_merge($this->equipment->getContents(), $this->armorInventory->getContents(), [ItemFactory::get(Item::ARMOR_STAND)]);
+        var_dump(debug_backtrace()[1]['function']);
+        return $debug;
     }
 
     /**
@@ -317,11 +319,11 @@ class ArmorStand extends Living
         Entity::attack($source);
 
         if ($source instanceof EntityDamageByEntityEvent and $source->getDamager() instanceof Player) {
-            if ($source->getDamager()->isCreative(true) and !$source->isCancelled()) {
+            if ($source->getDamager()->isCreative(true) and !$source->isCancelled() and $this->isAlive()) {
                 $this->kill();
             }
         }
-        if (!$source->isCancelled()) {
+        if (!$source->isCancelled() and $this->isAlive()) {
             $this->setGenericFlag(self::DATA_FLAG_VIBRATING, true);
             $this->vibrateTimer += 30;
         }
