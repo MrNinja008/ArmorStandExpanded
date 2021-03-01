@@ -294,9 +294,8 @@ class ArmorStand extends Living
         if ($this->customDrops !== null) {
             return $this->customDrops;
         }
-        $debug = array_merge($this->equipment->getContents(), $this->armorInventory->getContents(), [ItemFactory::get(Item::ARMOR_STAND)]);
-        var_dump(debug_backtrace()[1]['function']);
-        return $debug;
+        return array_merge($this->equipment->getContents(), $this->armorInventory->getContents(), [ItemFactory::get(Item::ARMOR_STAND)]);
+
     }
 
     /**
