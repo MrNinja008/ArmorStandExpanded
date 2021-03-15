@@ -21,6 +21,7 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
+use pocketmine\network\mcpe\protocol\AnimatePacket;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
@@ -325,6 +326,13 @@ class ArmorStand extends Living
         if (!$source->isCancelled() and $this->isAlive()) {
             $this->setGenericFlag(self::DATA_FLAG_VIBRATING, true);
             $this->vibrateTimer += 30;
+
+            //This is just a little Workaround since the Vibrating doesnt work correctly with PM 3.18.0 to visualize the ArmorStandHit
+            $pk = new AnimatePacket();
+            $pk->action =  AnimatePacket::ACTION_CRITICAL_HIT;
+            $pk->entityRuntimeId = $this->getId();
+            $source->getDamager()->sendDataPacket($pk);
+
         }
     }
 
