@@ -322,17 +322,17 @@ class ArmorStand extends Living
             if ($source->getDamager()->isCreative(true) and !$source->isCancelled() and $this->isAlive()) {
                 $this->kill();
             }
-        }
-        if (!$source->isCancelled() and $this->isAlive()) {
-            $this->setGenericFlag(self::DATA_FLAG_VIBRATING, true);
-            $this->vibrateTimer += 30;
+            if (!$source->isCancelled() and $this->isAlive()) {
+                $this->setGenericFlag(self::DATA_FLAG_VIBRATING, true);
+                $this->vibrateTimer += 30;
 
-            //This is just a little Workaround since the Vibrating doesnt work correctly with PM 3.18.0 to visualize the ArmorStandHit
-            $pk = new AnimatePacket();
-            $pk->action =  AnimatePacket::ACTION_CRITICAL_HIT;
-            $pk->entityRuntimeId = $this->getId();
-            $source->getDamager()->sendDataPacket($pk);
+                //This is just a little Workaround since the Vibrating doesnt work correctly with PM 3.18.0 to visualize the ArmorStandHit
+                $pk = new AnimatePacket();
+                $pk->action =  AnimatePacket::ACTION_CRITICAL_HIT;
+                $pk->entityRuntimeId = $this->getId();
+                $source->getDamager()->sendDataPacket($pk);
 
+            }
         }
     }
 
