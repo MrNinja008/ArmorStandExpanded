@@ -10,6 +10,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
+use pocketmine\network\mcpe\protocol\types\inventory\UseItemOnEntityTransactionData;
 use pocketmine\Player;
 
 /**
@@ -40,22 +41,24 @@ class EventListener implements Listener
     public function onInventoryTransaction(DataPacketReceiveEvent $source)
     {
         if ($source->getPacket() instanceof InventoryTransactionPacket) {
-            try {
-                $action = $source->getPacket()->trData->actionType == InventoryTransactionPacket::USE_ITEM_ON_ENTITY_ACTION_INTERACT;
-            } catch (\ErrorException $e) {
-                return;
-            }
-            if ($action) {
+            if($source->getPacket()->trData instanceof UseItemOnEntityTransactionData) {
                 try {
-                    $target = $source->getPlayer()->level->getEntity($source->getPacket()->trData->entityRuntimeId);
+                    $action = $source->getPacket()->trData->getActionType() == UseItemOnEntityTransactionData::ACTION_INTERACT;
                 } catch (\ErrorException $e) {
                     return;
                 }
-                if ($target instanceof ArmorStand) {
-                    if (!$target->isAlive() || $this->instance->canDoThis($source->getPlayer()) === false) {
+                if ($action) {
+                    try {
+                        $target = $source->getPlayer()->level->getEntity($source->getPacket()->trData->getEntityRuntimeId());
+                    } catch (\ErrorException $e) {
                         return;
                     }
-                    $target->onFirstInteract($source->getPlayer(), $source->getPlayer()->getInventory()->getIteminHand(), $source->getPacket()->trData->clickPos);
+                    if ($target instanceof ArmorStand) {
+                        if (!$target->isAlive() || $this->instance->canDoThis($source->getPlayer()) === false) {
+                            return;
+                        }
+                        $target->onFirstInteract($source->getPlayer(), $source->getPlayer()->getInventory()->getIteminHand(), $source->getPacket()->trData->getClickPos());
+                    }
                 }
             }
         }
