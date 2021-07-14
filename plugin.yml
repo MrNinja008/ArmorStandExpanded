@@ -1,9 +1,9 @@
 name: ArmorStandExpanded
 main: HighTec\ArmorStandExpanded\ArmorStandExpanded
-version: 1.2.8
+version: 1.2.9
 api:
 - 3.4.0
-mcpe-protocol: 440
+mcpe-protocol: 448
 author: HighTec
 description: "Adds fully functional ArmorStands to your Pocketmine-MP Server. Supports the MyPlot Plot-Protection"
 load: POSTWORLD
